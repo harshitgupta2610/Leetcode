@@ -17,9 +17,22 @@ public:
         return dp[idx][flag]= max(take, skip);
     }
     long long maxAlternatingSum(vector<int>& nums) {
+        // int n = nums.size();
+        // int m = 2;
+        // vector<vector<long long>> dp(n, vector<long long>(2, -1));
+        // return helper(nums,n, 0, true,dp);
+
+
+        //OPTIMISED APP
         int n = nums.size();
-        int m = 2;
-        vector<vector<long long>> dp(n, vector<long long>(2, -1));
-        return helper(nums,n, 0, true,dp);
+
+        long long even = nums[0];
+        long long odd = 0;
+        for (int i = 1; i < n; i++) {
+            even = max(even, odd + nums[i]);
+            odd = max(odd, even - nums[i]);
+        }
+        return even;
+        
     }
 };
