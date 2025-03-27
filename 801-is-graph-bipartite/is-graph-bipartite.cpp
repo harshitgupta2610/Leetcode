@@ -1,24 +1,6 @@
 class Solution {
 public:
     bool dfs(vector<vector<int>>& graph ,int curr, vector<int> &color, int currcolor){
-        // queue<int> q;
-        // q.push(curr);
-        // color[curr]= currcolor;
-        // while(!q.empty()){
-        //     int p=q.front();
-        //     q.pop();
-
-        //     for(int &v:graph[p]){
-        //         if(color[v]==color[p]){
-        //             return false;
-        //         }
-        //         else if(color[v] == -1){
-        //             color[v]=1- color[p];
-        //             q.push(v);
-        //         }
-        //     }
-        // }
-        // return true;
         color[curr]=currcolor;
         int colorOfV;
         for(int &v:graph[curr]){
@@ -35,13 +17,54 @@ public:
         }
         return true;
     }
+    // bool isBipartite(vector<vector<int>>& graph) {
+    //     int u = graph.size();
+    //     vector<int> color (u,-1);
+    //     int currcolor=1;
+    //     for(int i =0 ;i<u;i++){
+    //         if(color[i]==-1){
+    //             if(!bfs(graph,i,color,currcolor)){
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    //bfs
+    bool bfs(vector<vector<int>>& graph ,int curr, vector<int> &color, int currcolor){
+        color[curr]= currcolor;
+        queue<int> q;
+        q.push(curr);
+        int colorOfV;
+        while(!q.empty()){
+            int u=q.front();
+            q.pop();
+
+            for(int &v:graph[u]){
+                if(color[v]==color[u]){
+                    return false;
+                }
+                else if(color[v] == -1){
+                    if(color[u]==0){
+                        color[v]=1;
+                    }
+                    else{
+                        color[v]=0;
+                    }
+                    q.push(v);
+                }
+            }
+        }
+        return true;
+    }
     bool isBipartite(vector<vector<int>>& graph) {
         int u = graph.size();
         vector<int> color (u,-1);
         int currcolor=1;
         for(int i =0 ;i<u;i++){
             if(color[i]==-1){
-                if(!dfs(graph,i,color,currcolor)){
+                if(!bfs(graph,i,color,currcolor)){
                     return false;
                 }
             }
