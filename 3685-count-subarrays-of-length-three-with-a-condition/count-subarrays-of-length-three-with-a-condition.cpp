@@ -8,7 +8,7 @@ public:
         while(j<n){
             if(j-i+1==3){
                 int mid = (j+i)/2;
-                if((nums[i]+nums[j])==(nums[mid]/2.0)){
+                if(2*(nums[i]+nums[j])==(nums[i+1])){
                     count++;
                 }
                 i++;
