@@ -12,10 +12,12 @@ public:
             if(mp.count(i)){
                 if(mp[i]==2){
                     dup = i;
+                    
                 }
             }
             else{
                 mis=i;
+                
             }
         }
         return {dup,mis};
