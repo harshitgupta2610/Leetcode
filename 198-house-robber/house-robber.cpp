@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int helper(vector<int>& nums,int idx,vector <int> &dp ){
-        int n = nums.size();
-        if(idx>n-1){
-        return 0;
+    int t[101];
+    int solve(vector<int>& nums,int idx,int n){
+        if(idx>=n){
+            return 0;
         }
-        if(dp[idx]!=-1){
-            return dp[idx];
+        if(t[idx]!=-1){
+            return t[idx];
         }
-        return dp[idx]=max((helper(nums,idx+2,dp)+nums[idx]),helper(nums,idx+1,dp));
+        int take = nums[idx] + solve(nums,idx+2,n);
+        int skip = solve(nums,idx+1,n);
+        return t[idx] = max(take,skip);
     }
     int rob(vector<int>& nums) {
-        int  n = nums.size();
-        vector <int> dp (n,-1);
-        int res =helper(nums,0,dp);
-        return res;
+        int n =nums.size();
+        memset(t,-1,sizeof(t));
+        return solve(nums, 0, n);
     }
 };
