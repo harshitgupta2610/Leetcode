@@ -1,15 +1,17 @@
 class Solution {
 public:
-    int helper(vector<int> &temp,int n){
-        if(n<0){return 0;}
-        if(n==0){return 1;}
-        if(temp[n] != -1){
-            return temp[n];
-        }
-        return temp[n]= helper(temp,n-1) + helper(temp,n-2);
+    int t [50];
+    int helper(int n){
+       if(n==0 || n==1 || n==2){
+        return n;
+       }
+       if(t[n]!=-1){
+        return t[n];
+       }
+        return  t[n]=  helper(n-1) +helper(n-2);
     }
     int climbStairs(int n) {
-        vector<int> temp(n+1,-1);
-        return helper(temp,n);
+        memset(t,-1,sizeof(t));
+        return helper(n);
     }
 };
