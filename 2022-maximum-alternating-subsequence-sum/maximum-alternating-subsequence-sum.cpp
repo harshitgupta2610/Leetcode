@@ -1,38 +1,31 @@
 class Solution {
 public:
-    long long helper(vector<int> &nums, int n , int idx, bool flag,vector<vector<long long>> &dp){
+    int n;
+    long long t[1000001][2];
+    long long solve(int idx, vector<int>& nums, bool iseven) {
+        
         if(idx >= n) {
             return 0;
         }
-        if(dp[idx][flag]!=-1){
-            return dp[idx][flag];
-        }
-        long long skip= helper(nums, n, idx + 1 ,flag,dp);
+        if(t[idx][iseven] != -1)
+            return t[idx][iseven];
+        
+        long long skip = solve(idx+1, nums, iseven);
+        
         long long val = nums[idx];
-        if(flag == false){
+        if(iseven == false) {
             val = -val;
         }
-        long long take = helper(nums, n, idx+1,!flag,dp)+val;
-
-        return dp[idx][flag]= max(take, skip);
-    }
-    long long maxAlternatingSum(vector<int>& nums) {
-        // int n = nums.size();
-        // int m = 2;
-        // vector<vector<long long>> dp(n, vector<long long>(2, -1));
-        // return helper(nums,n, 0, true,dp);
-
-
-        //OPTIMISED APP
-        int n = nums.size();
-
-        long long even = nums[0];
-        long long odd = 0;
-        for (int i = 1; i < n; i++) {
-            even = max(even, odd + nums[i]);
-            odd = max(odd, even - nums[i]);
-        }
-        return even;
         
+        long long take = solve(idx+1, nums, !iseven) + val;
+        
+        return t[idx][iseven] = max(skip, take);
+        
+    }
+    
+    long long maxAlternatingSum(vector<int>& nums) {
+        n = nums.size();
+        memset(t, -1, sizeof(t));
+        return solve(0, nums, true);
     }
 };
