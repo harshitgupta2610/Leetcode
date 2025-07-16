@@ -4,24 +4,15 @@ public:
         if (!head || !head->next) {
             return nullptr; 
         }
-        int n = 0;
-        ListNode* current = head;
-        while (current) {
-            n++;
-            current = current->next;
-        }
-        int middlePos = n / 2;
+        ListNode* slow = head;
+        ListNode* fast = head;
         ListNode* prev = nullptr;
-        current = head;
-        for (int i = 0; i < middlePos; i++) {
-            prev = current;
-            current = current->next;
+        while (fast && fast->next) {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        if (prev) {
-            prev->next = current->next;
-        } else {
-            head = head->next; 
-        }
+        prev->next = slow->next;
         return head;
     }
 };
