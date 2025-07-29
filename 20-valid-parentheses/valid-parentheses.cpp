@@ -2,7 +2,7 @@ class Solution {
 public:
     bool isValid(string s) {
         stack<char> st;
-        for(char ch:s) {
+        for(auto &ch : s){
             if(st.empty() || ch == '(' || ch == '{' || ch == '[') {
                 st.push(ch);
                 continue;
@@ -12,19 +12,20 @@ public:
                     st.pop();
                 else
                     return false;
-            } else if(ch == '}') {
+            }
+            else if(ch == '}') {
                 if(st.top() == '{')
                     st.pop();
                 else
                     return false;
-            } else if(ch == ']') {
+            }
+            else if(ch == ']') {
                 if(st.top() == '[')
                     st.pop();
                 else
                     return false;
             }
         }
-        
         return st.empty();
     }
 };
