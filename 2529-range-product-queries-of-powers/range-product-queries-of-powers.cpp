@@ -6,7 +6,7 @@ public:
         vector<int> result;
         for(int i=0;i<32;i++){
             if((n&(1<<i))!=0){
-                powers.push_back(pow(2,i));//pow(2,i);
+                powers.push_back(1<<i);//pow(2,i);
             }
         }
         for(auto &query : queries){
