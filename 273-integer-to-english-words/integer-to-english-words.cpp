@@ -1,41 +1,62 @@
 class Solution {
 public:
-    
-    unordered_map<int, string> belowTen = { {0, ""}, {1, "One"}, {2, "Two"}, {3, "Three"}, {4, "Four"}, {5, "Five"}, {6, "Six"}, {7, "Seven"}, {8, "Eight"}, {9, "Nine"} };
-
-    unordered_map<int, string> belowTwenty = { {10, "Ten"}, {11, "Eleven"}, {12, "Twelve"}, {13, "Thirteen"}, {14, "Fourteen"}, {15, "Fifteen"}, {16, "Sixteen"}, {17, "Seventeen"}, {18, "Eighteen"}, {19, "Nineteen"} };
-
-    unordered_map<int, string> belowHundred = { {1, "Ten"}, {2, "Twenty"}, {3, "Thirty"}, {4, "Forty"}, {5, "Fifty"}, {6, "Sixty"}, {7, "Seventy"}, {8, "Eighty"}, {9, "Ninety"} };
-
-        
-    string solve(int num){
-        if(num<10){
-            return belowTen[num];
-        }
-        if(num<20){
-            return belowTwenty[num];
-        }
-        if(num<100){
-            return belowHundred[num/10] + ((num%10 != 0) ? " " + belowTen[num%10] : "");
-        }
-        if(num<1000){
-            return solve(num/100) + " Hundred" + ((num%100 != 0) ? " " + solve(num%100) : "");
-        }
-        
-        if(num < 1000000) {
-            return solve(num/1000) + " Thousand" + ((num%1000 != 0) ? " " + solve(num%1000): "");
-        }
-
-        if(num < 1000000000) {
-        return solve(num/1000000) +" Million"+((num%1000000 != 0) ?" "+solve(num%1000000):"");
-        }
-
-        return solve(num/1000000000) + " Billion" + ((num%1000000000 != 0) ? " " + solve(num%1000000000) : "");
-    }
     string numberToWords(int num) {
-        if(num==0){
-            return "Zero";
+        if (num == 0) return "Zero";
+        
+        vector<string> ones = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+        vector<string> teens = {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", 
+                               "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        vector<string> tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+        vector<string> units = {"", "Thousand", "Million", "Billion"};
+        
+        vector<string> parts;
+        int unitIndex = 0;
+        
+        while (num > 0) {
+            int chunk = num % 1000;
+            
+            if (chunk > 0) {
+                string chunkStr = "";
+                
+                // Handle hundreds
+                if (chunk >= 100) {
+                    chunkStr += ones[chunk / 100] + " Hundred";
+                    chunk %= 100;
+                    if (chunk > 0) chunkStr += " ";
+                }
+                
+                // Handle tens and ones
+                if (chunk >= 20) {
+                    chunkStr += tens[chunk / 10];
+                    chunk %= 10;
+                    if (chunk > 0) chunkStr += " " + ones[chunk];
+                }
+                else if (chunk >= 10) {
+                    chunkStr += teens[chunk - 10];
+                }
+                else if (chunk > 0) {
+                    chunkStr += ones[chunk];
+                }
+                
+                // Add unit
+                if (unitIndex > 0) {
+                    chunkStr += " " + units[unitIndex];
+                }
+                
+                parts.push_back(chunkStr);
+            }
+            
+            num /= 1000;
+            unitIndex++;
         }
-        return solve(num);
+        
+        // Join parts in reverse order
+        string result = "";
+        for (int i = parts.size() - 1; i >= 0; i--) {
+            if (!result.empty()) result += " ";
+            result += parts[i];
+        }
+        
+        return result;
     }
 };
