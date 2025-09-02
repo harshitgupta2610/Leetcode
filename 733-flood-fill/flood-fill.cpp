@@ -1,51 +1,21 @@
 class Solution {
 public:
-    bool val(int r, int c,vector<vector<int>>& image, vector<vector<int>>& ans,int iniColor,
-    int color) {
-
+     void dfs(vector<vector<int>>& image, int i, int j,int iniColor, int newColor){
         int m = image.size();
         int n = image[0].size();
-        if (r < 0 || r >= m || c < 0 || c >= n){ 
-            return false;
+        if(i<0 || i>=m || j<0 || j>=n || image[i][j] == newColor || image[i][j] != iniColor){
+            return;
         }
-
-        if (ans[r][c] == color) return false;                  // already painted [2]
-
-
-        return image[r][c] == iniColor;                        // still initial color [1]
+        image[i][j] = newColor;
+        dfs(image,i-1,j,iniColor,newColor);
+        dfs(image,i+1,j,iniColor,newColor);
+        dfs(image,i,j-1,iniColor,newColor);
+        dfs(image,i,j+1,iniColor,newColor);
     }
-    void dfs(int r, int c, vector<vector<int>>& image,vector<vector<int>>& ans,
-    int iniColor, int color){
-
-        ans[r][c]= color;
-
-        int  m  = image.size();
-        int n = image[0].size();
-
-        if (val(r-1, c, image, ans, iniColor, color)){ 
-            dfs(r-1, c, image, ans, iniColor, color); 
-        }
-
-        if (val(r, c+1, image, ans, iniColor, color)){ 
-            dfs(r, c+1, image, ans, iniColor, color); 
-        }
-
-
-        if (val(r+1, c, image, ans, iniColor, color)){ 
-            dfs(r+1, c, image, ans, iniColor, color); 
-        }
-
-        
-        if (val(r, c-1, image, ans, iniColor, color)){ 
-            dfs(r, c-1, image, ans, iniColor, color); 
-        }
-
-    }
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor){
         int iniColor = image[sr][sc];
-        vector<vector<int>> ans = image;
-        
-        dfs(sr,sc,image,ans,iniColor,color);
-        return ans;
+        dfs(image,sr,sc,iniColor,newColor);
+        return image;
     }
 };
