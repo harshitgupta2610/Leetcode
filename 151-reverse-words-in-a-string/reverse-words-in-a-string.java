@@ -1,16 +1,12 @@
 class Solution {
     public String reverseWords(String s) {
-        String[] words = s.trim().split("\\s+");
+        String[] arr = s.split(" ");
         StringBuilder sb = new StringBuilder();
-        
-        // Step 3: Traverse words array in reverse order
-        for (int i = words.length - 1; i >= 0; i--) {
-            sb.append(words[i]);
-            if (i > 0) { // add space between words
-                sb.append(" ");
-            }
+        for (int i = arr.length - 1; i >= 0; i--) {
+            if (arr[i].isEmpty())
+                continue;
+            sb.append(" " + arr[i]);
         }
-        
-        return sb.toString();
+        return sb.substring(1).toString();
     }
 }
